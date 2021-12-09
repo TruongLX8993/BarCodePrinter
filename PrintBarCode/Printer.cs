@@ -1,13 +1,12 @@
 ﻿using System.Drawing.Printing;
-using HiQPdf;
 
 namespace PrintBarCode
 {
-    public class PdfPrinter
+    public class Printer
     {
         private readonly HiQPdf.PdfPrinter _pdfPrinter;
 
-        public PdfPrinter(string printerName, PaperSize paperSize)
+        public Printer(string printerName, PaperSize paperSize)
         {
             _pdfPrinter = new HiQPdf.PdfPrinter
             {
@@ -19,14 +18,15 @@ namespace PrintBarCode
                 SerialNumber = Constance.License,
                 PageSettings =
                 {
-                    PaperSize = paperSize
+                    PaperSize = paperSize,
+                    // Margins = new Margins(0, 0, 0, 0)
                 }
             };
         }
 
         public void Print(byte[] pdfFile)
         {
-            _pdfPrinter.PrintPdf(pdfFile);
+            _pdfPrinter.PrintPdf(pdfFile,1,1);
         }
     }
 }

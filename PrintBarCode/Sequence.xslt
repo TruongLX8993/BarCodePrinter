@@ -4,7 +4,7 @@
                 xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:template match="/">
         
-        <div  xmlns="http://www.w3.org/1999/xhtml" id="container" style="width: 72mm">
+        <div  xmlns="http://www.w3.org/1999/xhtml" id="container" style="width: 96mm;">
             <style>
                 .patient span {
                 font-weight: bold;
@@ -53,16 +53,39 @@
                 <span id="patient-name"><xsl:value-of select="//Patient//Name"/></span>
                 <span id="patient-year"><xsl:value-of select="//Patient//Year"/> </span>
             </div>
-            <div class="department">
-                <span id="department-name"><xsl:value-of select="//Department/Name"/></span>
+          <div class="department" style ="font-size: 15pt">
+            <span id="department-name">
+              BỆNH VIỆN HỮU NGHỊ VIỆT ĐỨC
+            </span>
+          </div>
+            <div class="department" style ="font-size: 20pt;margin-top: 15px">
+              <span >STT:</span>
+              <span style ="margin-left: 20px"> <xsl:value-of select="//Stt"/></span>
             </div>
-            <span id="time"><xsl:value-of select="//Time"/></span>
+          <div  style ="font-size: 15px;margin-top: 10px">
+            <span>
+              <xsl:value-of select="//HoTen"/>
+            </span>
+          </div>
+          <div  style ="font-size: 15px;">
+            <span >Giờ lấy mẫu:</span>
+            <span style ="margin-left: 10px">
+              <xsl:value-of select="//GioLayMau"/>
+            </span>
+          </div>
+          <div  style ="font-size: 15px;">
+            <span>
+              <xsl:value-of select="//HangDoi"/>
+            </span>
+          </div>
+          
+            <!--<span id="time"><xsl:value-of select="//Time"/></span>
             <img>
                 <xsl:attribute name="src">
                     <xsl:value-of select="concat('data:image/gif;base64,',//QrCode/Img)"/>
                 </xsl:attribute>
             </img>
-            <span id="barcode-content"><xsl:value-of select="//QrCode/Content"/></span>
+            <span id="barcode-content"><xsl:value-of select="//QrCode/Content"/></span>-->
         </div>
     </xsl:template>
 </xsl:stylesheet>

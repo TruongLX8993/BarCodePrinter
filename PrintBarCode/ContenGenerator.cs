@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml;
 using System.Xml.Xsl;
 using HiQPdf;
@@ -17,11 +18,11 @@ namespace PrintBarCode
         }
     }
 
-    public class PdfGenerator
+    public class ContentGenerator
     {
         private readonly string _template;
 
-        public PdfGenerator(string template)
+        public ContentGenerator(string template)
         {
             _template = template;
         }
@@ -35,7 +36,7 @@ namespace PrintBarCode
                 {
                     FitPageWidth = true,
                     FitPageHeight = true,
-                    PageSize = HiQPdf.PdfPageSize.A5
+                    // PageSize = HiQPdf.PdfPageSize.A5
                     // PageSize = pageSize == null
                     //     ? PdfPageSize.A4
                     //     : new PdfPageSize(pageSize.Width, pageSize.Height)
@@ -43,6 +44,18 @@ namespace PrintBarCode
             };
             return htmlToPdf.ConvertHtmlToMemory(CreatHtml(xml), "");
         }
+        
+        public byte[] GenImg(string xml, PdfPageSize pdfPageSize = null)
+        {
+            var html = CreatHtml(xml);
+            var htmlToImg = new HtmlToImage()
+            {
+                SerialNumber = Constance.License,
+            };
+            
+            return htmlToImg.ConvertHtmlToMemory(html,String.Empty);
+        }
+        
 
         private string CreatHtml(string xml)
         {
