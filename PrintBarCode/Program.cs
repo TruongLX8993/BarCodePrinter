@@ -16,7 +16,7 @@ namespace PrintBarCode
             var data = File.ReadAllText("Sample.xml");
             // create pdf files.
             var contentGenerator = new ContentGenerator(temContent);
-            var bytes = contentGenerator.GenImg(data);
+            var bytes = contentGenerator.GenSvg(data);
             File.WriteAllBytes($"test_{Guid.NewGuid().ToString()}.svg", bytes);
 
             // printing ---------------------
@@ -37,8 +37,9 @@ namespace PrintBarCode
         {
             var paperSize = new PaperSize()
             {
-                Width = 72
+                Width = 58
             };
+            // const string printerName = "Microsoft Print to PDF";
             const string printerName = "TX 80";
             var xml =
                 "<Sequence><HoTen>Nguyễn Van A</HoTen><Stt>1001</Stt><GioLayMau>12:30 12/09/2021</GioLayMau><HangDoi>Phòng lấy mẫu</HangDoi></Sequence>";
@@ -48,11 +49,8 @@ namespace PrintBarCode
             var contentToPrint = new ContentGenerator(temContent);
             var content = contentToPrint.GenPdf(data);
             File.WriteAllBytes($"PhieuSTT_{Guid.NewGuid().ToString()}.pdf", content);
-            
-            var printer = new Printer(printerName, paperSize);
+            var printer = new Printer(printerName, null);
             printer.Print(content);
-            Console.WriteLine("print");
-            Console.ReadLine();
         }
     }
 }

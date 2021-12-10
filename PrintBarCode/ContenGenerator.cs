@@ -1,23 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Xml;
 using System.Xml.Xsl;
 using HiQPdf;
 
 namespace PrintBarCode
 {
-    public class PdfPageSize
-    {
-        public float Width { get; set; }
-        public float Height { get; set; }
-
-        public PdfPageSize(float width, float height)
-        {
-            Width = width;
-            Height = height;
-        }
-    }
-
     public class ContentGenerator
     {
         private readonly string _template;
@@ -27,7 +14,7 @@ namespace PrintBarCode
             _template = template;
         }
 
-        public byte[] GenPdf(string xml, PdfPageSize pdfPageSize = null)
+        public byte[] GenPdf(string xml)
         {
             var htmlToPdf = new HtmlToPdf
             {
@@ -36,28 +23,37 @@ namespace PrintBarCode
                 {
                     FitPageWidth = true,
                     FitPageHeight = true,
-                    // PageSize = HiQPdf.PdfPageSize.A5
-                    // PageSize = pageSize == null
-                    //     ? PdfPageSize.A4
-                    //     : new PdfPageSize(pageSize.Width, pageSize.Height)
-                },
+                    PageSize = HiQPdf.PdfPageSize.A4
+                }
             };
-            return htmlToPdf.ConvertHtmlToMemory(CreatHtml(xml), "");
+            var html = CreateHtml(xml);
+            return htmlToPdf.ConvertHtmlToMemory(html, "");
         }
-        
+
+        public byte[] GenSvg(string xml, PdfPageSize pdfPageSize = null)
+        {
+            var html = CreateHtml(xml);
+            var htmlToImg = new HtmlToSvg()
+            {
+                SerialNumber = Constance.License,
+            };
+
+            return htmlToImg.ConvertHtmlToMemory(html, string.Empty);
+        }
+
+
         public byte[] GenImg(string xml, PdfPageSize pdfPageSize = null)
         {
-            var html = CreatHtml(xml);
+            var html = CreateHtml(xml);
             var htmlToImg = new HtmlToImage()
             {
                 SerialNumber = Constance.License,
             };
-            
-            return htmlToImg.ConvertHtmlToMemory(html,String.Empty);
+            return htmlToImg.ConvertHtmlToMemory(html, string.Empty);
         }
-        
 
-        private string CreatHtml(string xml)
+
+        private string CreateHtml(string xml)
         {
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xml);

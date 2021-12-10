@@ -10,23 +10,22 @@ namespace PrintBarCode
         {
             _pdfPrinter = new HiQPdf.PdfPrinter
             {
+                SerialNumber = Constance.License,
                 SilentPrinting = true,
                 PrinterSettings =
                 {
                     PrinterName = printerName,
                 },
-                SerialNumber = Constance.License,
                 PageSettings =
                 {
-                    PaperSize = paperSize,
-                    // Margins = new Margins(0, 0, 0, 0)
+                    Margins = new Margins(0,0,0,0)
                 }
             };
         }
 
         public void Print(byte[] pdfFile)
         {
-            _pdfPrinter.PrintPdf(pdfFile,1,1);
+            _pdfPrinter.PrintPdf(pdfFile);
         }
     }
 }
